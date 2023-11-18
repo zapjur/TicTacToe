@@ -168,7 +168,7 @@ public class TicTacToe implements ActionListener {
 
     private class WonButtonUI extends javax.swing.plaf.basic.BasicButtonUI{
         public void paint(Graphics g, JComponent c){
-            c.setBackground(Color.GREEN);
+            c.setBackground(new Color(82, 183, 136));
             super.paint(g, c);
         }
     }
