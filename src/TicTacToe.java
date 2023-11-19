@@ -15,6 +15,8 @@ public class TicTacToe implements ActionListener {
     private int scoreX = 0;
     private int scoreO = 0;
     private JButton[] buttons = new JButton[9];
+    private JButton playAgainButton = new JButton("Play Again");
+    private JButton exitButton = new JButton("Exit");
     private final Color bgColor = new Color(33, 37, 41);
     private final Color fgColor = new Color(255,255,255);
     private final Color OColor = new Color(20, 145, 217);
@@ -64,10 +66,13 @@ public class TicTacToe implements ActionListener {
             buttons[i] = new JButton();
             buttonPanel.add(buttons[i]);
             buttons[i].setFont(new Font("Arial", Font.PLAIN, 48));
-            buttons[i].setUI(new BasicButtonUI());
+            buttons[i].setUI(new GameButtonUI());
             buttons[i].setFocusable(false);
             buttons[i].addActionListener(this);
         }
+
+        playAgainButton.addActionListener(this);
+        exitButton.addActionListener(this);
 
         frame.add(titlePanel, BorderLayout.NORTH);
         frame.add(buttonPanel);
@@ -98,15 +103,23 @@ public class TicTacToe implements ActionListener {
 
                     buttons[i].setText("O");
                     buttons[i].setForeground(OColor);
-                    checkIfWon(buttons[i].getText());
+                    if(checkIfWon(buttons[i].getText())){
+                        return;
+                    }
                     if(checkIfOver()){
-                        textField.setText("Draw!");
+                        gameDraw();
                         return;
                     }
                     playerXTurn = true;
                     textField.setText("X turn!");
                 }
             }
+        }
+        if(e.getSource() == exitButton){
+            System.exit(0);
+        }
+        if(e.getSource() == playAgainButton){
+            //reset();
         }
     }
 
@@ -141,6 +154,13 @@ public class TicTacToe implements ActionListener {
         return true;
     }
 
+    private void gameDraw(){
+        textField.setText("Draw!");
+        for(JButton button : buttons){
+            button.setEnabled(false);
+        }
+    }
+
     private void gameWon(String player, int b1, int b2, int b3){
         buttons[b1].setUI(new WonButtonUI());
         buttons[b2].setUI(new WonButtonUI());
@@ -155,11 +175,54 @@ public class TicTacToe implements ActionListener {
             scoreFieldX.setText("X points: " + ++scoreX);
         }
         else{
-            scoreFieldO.setText("X points: " + ++scoreO);
+            scoreFieldO.setText("O points: " + ++scoreO);
         }
+
+        int delay = 1000;
+        Timer timer = new Timer(delay, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showResult();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+
     }
 
-    private class BasicButtonUI extends javax.swing.plaf.basic.BasicButtonUI{
+    private void showResult() {
+
+        buttonPanel.setVisible(false);
+
+        playAgainButton.setUI(new GameButtonUI());
+        exitButton.setUI(new GameButtonUI());
+        playAgainButton.setPreferredSize(new Dimension(200, 200));
+        exitButton.setPreferredSize(new Dimension(200, 200));
+
+        JPanel resultPanel = new JPanel();
+        resultPanel.setLayout(new GridBagLayout());
+        resultPanel.setBackground(bgColor);
+        resultPanel.setForeground(fgColor);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        resultPanel.add(playAgainButton, gbc);
+
+        gbc.gridx = 1;
+
+        resultPanel.add(exitButton, gbc);
+
+        frame.add(resultPanel, BorderLayout.CENTER);
+        frame.add(resultPanel);
+    }
+
+
+    private class GameButtonUI extends javax.swing.plaf.basic.BasicButtonUI{
         public void paint(Graphics g, JComponent c){
             c.setBackground(new Color(222, 226, 230));
             super.paint(g, c);
