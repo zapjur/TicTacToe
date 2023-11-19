@@ -28,30 +28,6 @@ public class PvP extends TicTacToe implements ActionListener {
         newGameButton.addActionListener(this);
         exitButton.addActionListener(this);
 
-        playAgainButton.setUI(new ResultButtonUI());
-        newGameButton.setUI(new ResultButtonUI());
-        exitButton.setUI(new ResultButtonUI());
-
-        resultPanel.setLayout(new GridBagLayout());
-        resultPanel.setBackground(bgColor);
-        resultPanel.setForeground(fgColor);
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.anchor = GridBagConstraints.CENTER;
-
-        resultPanel.add(playAgainButton, gbc);
-
-        gbc.gridx = 1;
-        resultPanel.add(newGameButton, gbc);
-
-        gbc.gridx = 2;
-        resultPanel.add(exitButton, gbc);
-
-
         frame.add(titlePanel, BorderLayout.NORTH);
         frame.add(buttonPanel);
         frame.setVisible(true);
@@ -169,31 +145,6 @@ public class PvP extends TicTacToe implements ActionListener {
         timer.setRepeats(false);
         timer.start();
 
-    }
-
-    private void playAgain(){
-        for(JButton button : buttons){
-            button.setEnabled(true);
-            button.setText("");
-            button.setUI(new GameButtonUI());
-        }
-        buttonPanel.setVisible(true);
-        frame.remove(resultPanel);
-
-        textField.setText("X turn!");
-
-    }
-
-    private void newGame(){
-        frame.remove(buttonPanel);
-        frame.remove(resultPanel);
-        StartWindow st = new StartWindow();
-    }
-
-    private void showResult() {
-
-        buttonPanel.setVisible(false);
-        frame.add(resultPanel);
     }
 
 }
