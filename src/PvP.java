@@ -8,13 +8,13 @@ public class PvP extends TicTacToe implements ActionListener {
     private boolean playerXTurn = true;
     public PvP(){
 
-        textField.setText("Tic Tac Toe!");
+        textField.setText("X turn!");
         scoreFieldX.setText("X points: 0");
         scoreFieldO.setText("O points: 0");
 
-        titlePanel.add(scoreFieldO, BorderLayout.EAST);
-        titlePanel.add(textField, BorderLayout.CENTER);
-        titlePanel.add(scoreFieldX, BorderLayout.WEST);
+        titlePanel.add(scoreFieldX);
+        titlePanel.add(textField);
+        titlePanel.add(scoreFieldO);
 
         for(int i = 0; i < 9; i++){
             buttons[i] = new JButton();
@@ -185,21 +185,9 @@ public class PvP extends TicTacToe implements ActionListener {
     }
 
     private void newGame(){
-        for(JButton button : buttons){
-            button.setEnabled(true);
-            button.setText("");
-            button.setUI(new GameButtonUI());
-        }
-        buttonPanel.setVisible(true);
+        frame.remove(buttonPanel);
         frame.remove(resultPanel);
-
-        scoreX = 0;
-        scoreO = 0;
-
-        scoreFieldX.setText("X points: " + scoreX);
-        scoreFieldO.setText("O points: " + scoreO);
-
-        textField.setText("X turn!");
+        StartWindow st = new StartWindow();
     }
 
     private void showResult() {

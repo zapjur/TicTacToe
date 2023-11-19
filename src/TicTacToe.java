@@ -50,8 +50,9 @@ public class TicTacToe {
         scoreFieldO.setHorizontalAlignment(JLabel.CENTER);
         scoreFieldO.setOpaque(true);
 
-        titlePanel.setLayout(new BorderLayout());
+        titlePanel.setLayout(new GridLayout(1, 3, 10, 10));
         titlePanel.setBounds(0, 0, 500, 100);
+        titlePanel.setBackground(bgColor);
 
         buttonPanel.setLayout(new GridLayout(3,3, 10, 10));
         buttonPanel.setBackground(bgColor);
