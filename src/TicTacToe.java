@@ -9,6 +9,7 @@ public class TicTacToe implements ActionListener {
     private Random random = new Random();
     private JPanel titlePanel = new JPanel();
     private JPanel buttonPanel = new JPanel();
+    private JPanel resultPanel = new JPanel();
     private JLabel textField = new JLabel();
     private JLabel scoreFieldX = new JLabel();
     private JLabel scoreFieldO = new JLabel();
@@ -16,6 +17,7 @@ public class TicTacToe implements ActionListener {
     private int scoreO = 0;
     private JButton[] buttons = new JButton[9];
     private JButton playAgainButton = new JButton("Play Again");
+    private JButton newGameButton = new JButton("New Game");
     private JButton exitButton = new JButton("Exit");
     private final Color bgColor = new Color(33, 37, 41);
     private final Color fgColor = new Color(255,255,255);
@@ -72,7 +74,36 @@ public class TicTacToe implements ActionListener {
         }
 
         playAgainButton.addActionListener(this);
+        newGameButton.addActionListener(this);
         exitButton.addActionListener(this);
+
+        playAgainButton.setUI(new GameButtonUI());
+        newGameButton.setUI(new GameButtonUI());
+        exitButton.setUI(new GameButtonUI());
+
+        playAgainButton.setPreferredSize(new Dimension(150, 200));
+        newGameButton.setPreferredSize(new Dimension(150, 200));
+        exitButton.setPreferredSize(new Dimension(150, 200));
+
+        resultPanel.setLayout(new GridBagLayout());
+        resultPanel.setBackground(bgColor);
+        resultPanel.setForeground(fgColor);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        resultPanel.add(playAgainButton, gbc);
+
+        gbc.gridx = 1;
+        resultPanel.add(newGameButton, gbc);
+
+        gbc.gridx = 2;
+        resultPanel.add(exitButton, gbc);
+
 
         frame.add(titlePanel, BorderLayout.NORTH);
         frame.add(buttonPanel);
@@ -92,7 +123,7 @@ public class TicTacToe implements ActionListener {
                         return;
                     }
                     if(checkIfOver()){
-                        textField.setText("Draw!");
+                        gameDraw();
                         return;
                     }
                     playerXTurn = false;
@@ -119,7 +150,9 @@ public class TicTacToe implements ActionListener {
             System.exit(0);
         }
         if(e.getSource() == playAgainButton){
-            //reset();
+            playAgain();
+        } else if (e.getSource() == newGameButton) {
+            newGame();
         }
     }
 
@@ -147,8 +180,8 @@ public class TicTacToe implements ActionListener {
     }
 
     private boolean checkIfOver(){
-        for(int i = 0; i < 9; i++){
-            if(buttons[i].getText().isEmpty())
+        for(JButton button : buttons){
+            if(button.getText().isEmpty())
                 return false;
         }
         return true;
@@ -159,6 +192,7 @@ public class TicTacToe implements ActionListener {
         for(JButton button : buttons){
             button.setEnabled(false);
         }
+        showResult();
     }
 
     private void gameWon(String player, int b1, int b2, int b3){
@@ -190,34 +224,40 @@ public class TicTacToe implements ActionListener {
 
     }
 
+    private void playAgain(){
+        for(JButton button : buttons){
+            button.setEnabled(true);
+            button.setText("");
+            button.setUI(new GameButtonUI());
+        }
+        buttonPanel.setVisible(true);
+        frame.remove(resultPanel);
+
+        textField.setText("X turn!");
+
+    }
+
+    private void newGame(){
+        for(JButton button : buttons){
+            button.setEnabled(true);
+            button.setText("");
+            button.setUI(new GameButtonUI());
+        }
+        buttonPanel.setVisible(true);
+        frame.remove(resultPanel);
+
+        scoreX = 0;
+        scoreO = 0;
+
+        scoreFieldX.setText("X points: " + scoreX);
+        scoreFieldO.setText("O points: " + scoreO);
+
+        textField.setText("X turn!");
+    }
+
     private void showResult() {
 
         buttonPanel.setVisible(false);
-
-        playAgainButton.setUI(new GameButtonUI());
-        exitButton.setUI(new GameButtonUI());
-        playAgainButton.setPreferredSize(new Dimension(200, 200));
-        exitButton.setPreferredSize(new Dimension(200, 200));
-
-        JPanel resultPanel = new JPanel();
-        resultPanel.setLayout(new GridBagLayout());
-        resultPanel.setBackground(bgColor);
-        resultPanel.setForeground(fgColor);
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.anchor = GridBagConstraints.CENTER;
-
-        resultPanel.add(playAgainButton, gbc);
-
-        gbc.gridx = 1;
-
-        resultPanel.add(exitButton, gbc);
-
-        frame.add(resultPanel, BorderLayout.CENTER);
         frame.add(resultPanel);
     }
 
