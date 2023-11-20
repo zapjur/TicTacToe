@@ -3,8 +3,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class PvP extends TicTacToe implements ActionListener {
-
-    private int[] winningCombination;
     private boolean playerXTurn = true;
     public PvP(){
 
@@ -77,74 +75,6 @@ public class PvP extends TicTacToe implements ActionListener {
         } else if (e.getSource() == newGameButton) {
             newGame();
         }
-    }
-
-    private boolean checkIfWon(String player){
-
-        int[][] winConditions = {
-                {0, 1, 2}, {3, 4, 5}, {6, 7, 8},
-                {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
-                {0, 4, 8}, {2, 4, 6}};
-
-        for (int[] condition : winConditions) {
-            int b1 = condition[0];
-            int b2 = condition[1];
-            int b3 = condition[2];
-
-            if (buttons[b1].getText().equals(player) &&
-                buttons[b2].getText().equals(player) &&
-                buttons[b3].getText().equals(player)) {
-
-                gameWon(player, b1, b2, b3);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean checkIfOver(){
-        for(JButton button : buttons){
-            if(button.getText().isEmpty())
-                return false;
-        }
-        return true;
-    }
-
-    private void gameDraw(){
-        textField.setText("Draw!");
-        for(JButton button : buttons){
-            button.setEnabled(false);
-        }
-        showResult();
-    }
-
-    private void gameWon(String player, int b1, int b2, int b3){
-        buttons[b1].setUI(new WonButtonUI());
-        buttons[b2].setUI(new WonButtonUI());
-        buttons[b3].setUI(new WonButtonUI());
-
-        for(JButton button : buttons){
-            button.setEnabled(false);
-        }
-
-        textField.setText(player + " Won!");
-        if(player.equals("X")){
-            scoreFieldX.setText("X points: " + ++scoreX);
-        }
-        else{
-            scoreFieldO.setText("O points: " + ++scoreO);
-        }
-
-        int delay = 1000;
-        Timer timer = new Timer(delay, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showResult();
-            }
-        });
-        timer.setRepeats(false);
-        timer.start();
-
     }
 
 }

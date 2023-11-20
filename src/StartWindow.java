@@ -70,6 +70,12 @@ public class StartWindow extends TicTacToe implements ActionListener {
         if(e.getSource() == vsComputerButton){
             frame.add(difficultyModeButtonPanel, BorderLayout.SOUTH);
             textField.setText("Choose difficulty!");
+
+        }
+        if(e.getSource() == hardModeButton){
+            frame.remove(gameModeButtonPanel);
+            frame.remove(difficultyModeButtonPanel);
+            VsComputer vc = new VsComputer();
         }
     }
 
