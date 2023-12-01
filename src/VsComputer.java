@@ -2,12 +2,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class VsComputer extends TicTacToe implements ActionListener {
 
     private boolean playerXTurn = true;
+    private boolean hardMode = false;
+    private boolean mediumMode = false;
+    private boolean easyMode = false;
 
-    public VsComputer() {
+    Random random = new Random();
+
+
+    public VsComputer(boolean hardMode, boolean mediumMode, boolean easyMode) {
         textField.setText("X turn!");
         scoreFieldX.setText("X points: 0");
         scoreFieldO.setText("O points: 0");
@@ -15,6 +22,10 @@ public class VsComputer extends TicTacToe implements ActionListener {
         titlePanel.add(scoreFieldX);
         titlePanel.add(textField);
         titlePanel.add(scoreFieldO);
+
+        this.easyMode = easyMode;
+        this.mediumMode = mediumMode;
+        this.hardMode = hardMode;
 
         for (int i = 0; i < 9; i++) {
             buttons[i] = new JButton();
@@ -62,6 +73,9 @@ public class VsComputer extends TicTacToe implements ActionListener {
         if(e.getSource() == playAgainButton){
             playAgain();
         } else if (e.getSource() == newGameButton) {
+            hardMode = false;
+            mediumMode = false;
+            easyMode = false;
             newGame();
         }
     }
@@ -79,20 +93,56 @@ public class VsComputer extends TicTacToe implements ActionListener {
             }
             k++;
         }
-        int bestMove = minMaxAlg(board, 'O');
-        buttons[bestMove].setForeground(OColor);
-        buttons[bestMove].setText("O");
 
-        if(checkIfWon("O")){
+        if(hardMode) {
+            int bestMove = minMaxAlg(board, 'O');
+            buttons[bestMove].setForeground(OColor);
+            buttons[bestMove].setText("O");
+
+        }
+        else if(easyMode){
+            while(true){
+                int i = random.nextInt(10);
+                if (board[i] != ' ') {
+                    continue;
+                }
+                board[i] = 'O';
+                buttons[i].setForeground(OColor);
+                buttons[i].setText("O");
+                break;
+            }
+        }
+        else{
+            int prob = random.nextInt(10);
+            if(prob < 5){
+                while(true){
+                    int i = random.nextInt(10);
+                    if (board[i] != ' ') {
+                        continue;
+                    }
+                    board[i] = 'O';
+                    buttons[i].setForeground(OColor);
+                    buttons[i].setText("O");
+                    break;
+                }
+            }
+            else{
+                int bestMove = minMaxAlg(board, 'O');
+                buttons[bestMove].setForeground(OColor);
+                buttons[bestMove].setText("O");
+            }
+        }
+
+        if (checkIfWon("O")) {
             int[] bs = new int[3];
             int l = 0;
-            for(int i = 0; i < 9; i++){
-                if(buttons[i].getText() == "O") bs[l++] = i;
+            for (int i = 0; i < 9; i++) {
+                if (buttons[i].getText() == "O") bs[l++] = i;
             }
 
-            gameWon("O",bs[0],bs[1],bs[2]);
+            gameWon("O", bs[0], bs[1], bs[2]);
         }
-        if(checkIfOver()){
+        if (checkIfOver()) {
             gameDraw();
         }
 

@@ -65,6 +65,7 @@ public class StartWindow extends TicTacToe implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == pvpButton) {
             frame.remove(gameModeButtonPanel);
+            textField.setText("");
             PvP pvpGame = new PvP();
         }
         if(e.getSource() == vsComputerButton){
@@ -75,7 +76,20 @@ public class StartWindow extends TicTacToe implements ActionListener {
         if(e.getSource() == hardModeButton){
             frame.remove(gameModeButtonPanel);
             frame.remove(difficultyModeButtonPanel);
-            VsComputer vc = new VsComputer();
+            textField.setText("");
+            VsComputer vc = new VsComputer(true, false, false);
+        }
+        if(e.getSource() == mediumModeButton){
+            frame.remove(gameModeButtonPanel);
+            frame.remove(difficultyModeButtonPanel);
+            textField.setText("");
+            VsComputer vc = new VsComputer(false, true, false);
+        }
+        if(e.getSource() == easyModeButton){
+            frame.remove(gameModeButtonPanel);
+            frame.remove(difficultyModeButtonPanel);
+            textField.setText("");
+            VsComputer vc = new VsComputer(false, false, true);
         }
     }
 

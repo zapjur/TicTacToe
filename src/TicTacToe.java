@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class TicTacToe {
-    protected JFrame frame = new JFrame();
+    protected JFrame frame = GameFrame.getInstance();
     protected JPanel titlePanel = new JPanel();
     protected JPanel buttonPanel = new JPanel();
     protected JPanel resultPanel = new JPanel();
@@ -25,10 +25,10 @@ public class TicTacToe {
             {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
             {0, 4, 8}, {2, 4, 6}};
 
-    protected final Color OColor = new Color(20, 145, 217);
-    protected final Color XColor = new Color(214, 46, 70);
-    protected final Color bgColor = new Color(33, 37, 41);
-    protected final Color fgColor = new Color(255,255,255);
+    protected static final Color OColor = new Color(20, 145, 217);
+    protected static final Color XColor = new Color(214, 46, 70);
+    public static final Color bgColor = new Color(33, 37, 41);
+    protected static final Color fgColor = new Color(255,255,255);
 
     public TicTacToe(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,6 +86,7 @@ public class TicTacToe {
 
         gbc.gridx = 2;
         resultPanel.add(exitButton, gbc);
+
 
     }
 
